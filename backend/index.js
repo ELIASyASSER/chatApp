@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import dotenv from 'dotenv/config.js'
 import  express  from "express"
 import cookieParser from"cookie-parser"
 import cors from "cors"
@@ -39,7 +39,7 @@ const getTokenParams = (code) =>
 })
 app.use(cors({
     origin:[config.clientUrl],
-    credentials:"true"
+    credentials:true
 }))
 app.use(cookieParser())
 
@@ -64,6 +64,7 @@ app.get('/auth/url', (_, res) => {
     
 })
 
+
 app.get('/auth/token', async (req, res) => {
     const { code } = req.query
     if (!code) return res.status(400).json({ message: 'Authorization code must be provided' })
@@ -83,7 +84,7 @@ app.get('/auth/token', async (req, res) => {
         expiresIn: config.tokenExpiration,
       })
       // Set cookies for user
-      res.cookie('token', token, {
+      res.cookie('token', token , {
         maxAge: config.tokenExpiration,
         httpOnly: true,
       })
