@@ -1,3 +1,8 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 .btn {
     border-radius: 100rem;
     padding: 12px 16px;
