@@ -21,7 +21,8 @@ export const AuthContextProvider = ({ children }) => {
     }
   }, [])
 
-  
+
+
   useEffect(() => {
     checkLoginState()
   }, [checkLoginState])

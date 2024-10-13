@@ -5,8 +5,20 @@ import cors from "cors"
 import jwt  from "jsonwebtoken"
 import queryString  from "query-string"
 import axios  from "axios"
+import mongoose  from 'mongoose'
+import {User} from "./models/user"
+
 const  app = express()
 
+const connection = async(url)=>{
+  try {
+    console.log("database connected successfully");
+    return mongoose.connect(url)
+  } catch (error) {
+    console.log(error.message);
+    
+  }
+}
 
 const config = {
     clientId: process.env.GOOGLE_CLIENT_ID,
@@ -64,7 +76,6 @@ app.get('/auth/url', (_, res) => {
     
 })
 
-
 app.get('/auth/token', async (req, res) => {
     const { code } = req.query
     if (!code) return res.status(400).json({ message: 'Authorization code must be provided' })
@@ -73,16 +84,19 @@ app.get('/auth/token', async (req, res) => {
       const tokenParam = getTokenParams(code)
       // Exchange authorization code for access token (id token is returned here too)
       const {
+
         data: { id_token },
       } = await axios.post(`${config.tokenUrl}?${tokenParam}`)
       if (!id_token) return res.status(400).json({ message: 'Auth error' })
       // Get user info from id token
       const { email, name, picture } = jwt.decode(id_token)
-      const user = { name, email, picture }
+      const user = await User.create({name:name,email:email,picture:picture})
+
       // Sign a new token
       const token = jwt.sign({ user }, config.tokenSecret, {
         expiresIn: config.tokenExpiration,
       })
+      
       // Set cookies for user
       res.cookie('token', token , {
         maxAge: config.tokenExpiration,
@@ -99,11 +113,14 @@ app.get('/auth/token', async (req, res) => {
   })
 
   app.get('/auth/logged_in', (req, res) => {
+
     try {
       // Get token from cookie
       const token = req.cookies.token
       if (!token) return res.json({ loggedIn: false })
       const { user } = jwt.verify(token, config.tokenSecret)
+    console.log(user);
+    
       const newToken = jwt.sign({ user }, config.tokenSecret, {
         expiresIn: config.tokenExpiration,
       })
@@ -121,6 +138,7 @@ app.get('/auth/token', async (req, res) => {
   app.post('/auth/logout', (_, res) => {
     // clear cookie
     res.clearCookie('token').json({ message: 'Logged out' })
+  
   })
 
   app.get('/user/posts', auth, async (_, res) => {
@@ -132,9 +150,21 @@ app.get('/auth/token', async (req, res) => {
     }
   })
 
+async function start() {
+  try {
+    
+    await connection(process.env.MONGO_URI)
+    console.log('database connected ');
+    
+    app.listen(4000,()=>{
+            console.log("server is listening ");
+    })
+  } catch (error) {
+    console.log(error.message );
+    process.exit(1)
+    
+  }
+  
+}
 
-
-
-app.listen(4000,()=>{
-        console.log("server is listening ");
-})
+start()
