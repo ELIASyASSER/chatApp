@@ -90,13 +90,17 @@ app.get('/auth/token', async (req, res) => {
       if (!id_token) return res.status(400).json({ message: 'Auth error' })
       // Get user info from id token
       const { email, name, picture } = jwt.decode(id_token)
-      const user = await User.create({name:name,email:email,picture:picture})
+      let user = await User.findOne({email:email})
+      if(!user){
+        user = await User.create({name:name,email:email,picture:picture})
+
+      }
 
       // Sign a new token
       const token = jwt.sign({ user }, config.tokenSecret, {
         expiresIn: config.tokenExpiration,
       })
-      
+
       // Set cookies for user
       res.cookie('token', token , {
         maxAge: config.tokenExpiration,
