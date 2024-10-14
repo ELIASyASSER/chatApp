@@ -23,6 +23,9 @@ export default {
       },
       animation:{
         fill:"fill 7s linear infinite"
+      },
+      transitionProperty:{
+        "transition":"2s"
       }
     },
   },

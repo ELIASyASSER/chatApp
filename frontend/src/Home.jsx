@@ -5,8 +5,11 @@ import Login from './login'
 
 
 const Home = () => {
-    const { loggedIn } = React.useContext(AuthContext)
-
+    const { loggedIn,loading } = React.useContext(AuthContext)
+    if(loading){
+        return <div>loading ...</div>
+    }
+    
     if (loggedIn === true) return <Dashboard />
     if (loggedIn === false) return <Login />
     return <></>

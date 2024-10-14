@@ -8,7 +8,6 @@ export const AuthContext = createContext()
 export const AuthContextProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(null)
   const [user, setUser] = useState(null)
-
   const checkLoginState = useCallback(async () => {
     try {
       const {
@@ -16,7 +15,9 @@ export const AuthContextProvider = ({ children }) => {
       } = await axios.get(`${serverUrl}/auth/logged_in`)
       setLoggedIn(logged_in)
       user && setUser(user)
-    } catch (err) {
+    } 
+    
+    catch (err) {
       console.error(err)
     }
   }, [])
@@ -24,6 +25,7 @@ export const AuthContextProvider = ({ children }) => {
 
 
   useEffect(() => {
+
     checkLoginState()
   }, [checkLoginState])
 

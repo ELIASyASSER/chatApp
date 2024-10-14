@@ -6,7 +6,7 @@ import jwt  from "jsonwebtoken"
 import queryString  from "query-string"
 import axios  from "axios"
 import mongoose  from 'mongoose'
-import {User} from "./models/user"
+import {User} from "./models/user.js"
 
 const  app = express()
 
@@ -40,7 +40,8 @@ const authParams = queryString.stringify({
     access_type: 'offline',
     state: 'standard_oauth',
     prompt: 'consent',
-})
+
+  })
 const getTokenParams = (code) =>
     queryString.stringify({
     client_id: config.clientId,
@@ -50,6 +51,7 @@ const getTokenParams = (code) =>
     redirect_uri: config.redirectUrl,
 })
 app.use(cors({
+
     origin:[config.clientUrl],
     credentials:true
 }))
@@ -90,14 +92,18 @@ app.get('/auth/token', async (req, res) => {
       if (!id_token) return res.status(400).json({ message: 'Auth error' })
       // Get user info from id token
       const { email, name, picture } = jwt.decode(id_token)
+
       let user = await User.findOne({email:email})
+
       if(!user){
         user = await User.create({name:name,email:email,picture:picture})
 
       }
 
+
       // Sign a new token
       const token = jwt.sign({ user }, config.tokenSecret, {
+
         expiresIn: config.tokenExpiration,
       })
 
@@ -108,6 +114,7 @@ app.get('/auth/token', async (req, res) => {
       })
       // You can choose to store user in a DB instead
       res.json({
+
         user,
       })
     } catch (err) {
@@ -140,27 +147,33 @@ app.get('/auth/token', async (req, res) => {
   })
 
   app.post('/auth/logout', (_, res) => {
+
     // clear cookie
     res.clearCookie('token').json({ message: 'Logged out' })
   
   })
 
-  app.get('/user/posts', auth, async (_, res) => {
+  app.get('/user/people', auth, async (_, res) => {
     try {
-      const { data } = await axios.get(config.postUrl)
-      res.json({ posts: data?.slice(0, 5) })
+      const people = await User.find({})
+      
+      
+      // const { data } = await axios.get(config.postUrl)
+      res.json({ users:people})
     } catch (err) {
       console.log('Error: ', err)
     }
+  
   })
 
 async function start() {
+  const PORT  = process.env.PORT || 4000
+
   try {
     
     await connection(process.env.MONGO_URI)
     console.log('database connected ');
-    
-    app.listen(4000,()=>{
+    app.listen(PORT,()=>{
             console.log("server is listening ");
     })
   } catch (error) {
