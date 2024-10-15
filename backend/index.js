@@ -7,12 +7,12 @@ import queryString  from "query-string"
 import axios  from "axios"
 import mongoose  from 'mongoose'
 import {User} from "./models/user.js"
+import { errorHandle } from './middlewares/errors.js'
 
 const  app = express()
 
 const connection = async(url)=>{
   try {
-    console.log("database connected successfully");
     return mongoose.connect(url)
   } catch (error) {
     console.log(error.message);
@@ -130,14 +130,13 @@ app.get('/auth/token', async (req, res) => {
       const token = req.cookies.token
       if (!token) return res.json({ loggedIn: false })
       const { user } = jwt.verify(token, config.tokenSecret)
-    console.log(user);
     
       const newToken = jwt.sign({ user }, config.tokenSecret, {
         expiresIn: config.tokenExpiration,
       })
       // Reset token in cookie
       res.cookie('token', newToken, {
-        maxAge: config.tokenExpiration,
+        maxAge: 900000,
         httpOnly: true,
       })
       res.json({ loggedIn: true, user })
@@ -157,7 +156,6 @@ app.get('/auth/token', async (req, res) => {
     try {
       const people = await User.find({})
       
-      
       // const { data } = await axios.get(config.postUrl)
       res.json({ users:people})
     } catch (err) {
@@ -165,6 +163,26 @@ app.get('/auth/token', async (req, res) => {
     }
   
   })
+    //single user
+
+  app.get('/user/:id',async(req,res,next)=>{
+  const {id} = req.params
+  try {
+    const singleUser = await User.findOne({_id: id})
+    if(!singleUser){
+      return next()
+    }
+    return res.status(200).json(singleUser)
+    
+  } catch (error) {
+    console.log(error.message);
+    
+    return next(error)
+  }
+
+})
+
+app.use(errorHandle)
 
 async function start() {
   const PORT  = process.env.PORT || 4000

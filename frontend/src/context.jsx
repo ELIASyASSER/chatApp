@@ -8,6 +8,7 @@ export const AuthContext = createContext()
 export const AuthContextProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(null)
   const [user, setUser] = useState(null)
+  const [users, setUsers] = useState([])
   const checkLoginState = useCallback(async () => {
     try {
       const {
@@ -30,7 +31,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [checkLoginState])
 
   return (
-    <AuthContext.Provider value={{ loggedIn, checkLoginState, user }}>
+    <AuthContext.Provider value={{ loggedIn, checkLoginState, user ,users,setUsers}}>
       {children}
     </AuthContext.Provider>
   )
