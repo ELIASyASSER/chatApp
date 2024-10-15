@@ -109,7 +109,7 @@ app.get('/auth/token', async (req, res) => {
 
       // Set cookies for user
       res.cookie('token', token , {
-        maxAge: config.tokenExpiration,
+        maxAge: 900000,
         httpOnly: true,
       })
       // You can choose to store user in a DB instead
