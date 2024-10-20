@@ -9,7 +9,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<Home/>}/>
                 <Route path='/profile' element={<Callback/>}/>
-                <Route path='/:id' element={<Chat/>}/>
+                <Route path='/:id1/:id2' element={<Chat/>}/>
             </Routes>
           </Router>
   )

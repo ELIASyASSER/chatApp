@@ -1,4 +1,4 @@
-import { useState,useEffect, useContext } from "react"
+import { useState,useEffect, useContext, useCallback } from "react"
 import { useParams,useNavigate} from "react-router-dom"
 import axios from "axios"
 import {AuthContext} from '../context'
@@ -8,29 +8,34 @@ import BodyOfChat from "./BodyOfChat"
 const serverUrl = import.meta.env.VITE_SERVER_URL
 axios.defaults.withCredentials = true
 const Chat = (props) => {
+  const {messages,setMessages} = useContext(AuthContext)
+  
   const navigate = useNavigate()
-  const {loggedIn}  = useContext(AuthContext)
-  const {id} = useParams()
-  const [userInfo,setUserInfo] = useState()
+  const {id1,id2} = useParams()
+
+  
+  // Fetch old messages when entering the chat
+  const fetchMessages = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`${serverUrl}/${id1}/${id2}`);
+      setMessages(data); // Set old messages from the backend
+      } catch (error) {
+        console.error("Error fetching messages:", error.message);
+      }
+    },[id1, id2,messages])
+
+    useEffect(() => {
+      fetchMessages(); // Fetch old messages on component mount
+    },[id1, id2, messages, fetchMessages])
+
+
   const back = ()=>{
     navigate("/")
   }
-  useEffect(() => {
-    (async()=>{
-      try {
-        const {data} = await axios.get(`${serverUrl}/user/${id}`)
-        setUserInfo(data)
-        
-      } catch (error) {
-        console.log(error.message);
-      }
-    })()
-  },[loggedIn])
-  
-  
+
   return (
     <>
-      <HeaderChat back={back} userInfo={userInfo}/>
+      <HeaderChat back={back} />
       <BodyOfChat/>
       <Footer/>
     </>

@@ -1,9 +1,38 @@
+import { useContext, useEffect } from 'react'
+import {AuthContext} from '../context'
 import img from '../assets/USER.jpg'
 import {FaArrowCircleLeft} from 'react-icons/fa'
-const HeaderChat = ({back,userInfo}) => {
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
+const serverUrl = import.meta.env.VITE_SERVER_URL
+axios.defaults.withCredentials = true
+
+const HeaderChat = ({back}) => {
+  const {id2} = useParams()
+  const {userInfo,setUserInfo} = useContext(AuthContext)
+  
+  useEffect(() => {
+    (async()=>{
+      try {
+        const {data} = await axios.get(`${serverUrl}/user/${id2}`)
+        setUserInfo(data)
+        
+        
+      } catch (error) {
+        console.log(error.message);
+      }
+    })()
+  
+
+  },[])
+
+
+
   const name = userInfo?.name.toUpperCase()
+  
   return (
     <header className="bg-white w-full sm:w-[95%] m-2 mx-auto p-3 flex items-center ">
+
     <FaArrowCircleLeft className="w-10  h-10 cursor-pointer" onClick={back}/>
     <div className="flex ml-6">
       <div className="relative bg-black rounded-lg overflow-hidden sm:w-20 sm:h-20 w-16 h-16"> 
@@ -16,7 +45,7 @@ const HeaderChat = ({back,userInfo}) => {
             <span className="text-gray-400 mr-3 ">Joined At</span>
             <time className="font-semibold">{new Date(userInfo?.createdAt).toLocaleDateString()}</time>
         </div>
-    
+
     </div>
   </header>
   )

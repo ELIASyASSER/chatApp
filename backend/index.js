@@ -7,6 +7,7 @@ import queryString  from "query-string"
 import axios  from "axios"
 import mongoose  from 'mongoose'
 import {User} from "./models/user.js"
+import {Msg} from './models/messages.js'
 import { errorHandle } from './middlewares/errors.js'
 
 const  app = express()
@@ -16,7 +17,6 @@ const connection = async(url)=>{
     return mongoose.connect(url)
   } catch (error) {
     console.log(error.message);
-    
   }
 }
 
@@ -56,7 +56,8 @@ app.use(cors({
     credentials:true
 }))
 app.use(cookieParser())
-
+// app.use(express.urlencoded({extended:false}))
+app.use(express.json())
 // Verify auth
 const auth = (req, res, next) => {
     try {
@@ -164,22 +165,65 @@ app.get('/auth/token', async (req, res) => {
   
   })
     //single user
-
   app.get('/user/:id',async(req,res,next)=>{
+
   const {id} = req.params
+  
   try {
+
     const singleUser = await User.findOne({_id: id})
     if(!singleUser){
+
       return next()
+
     }
     return res.status(200).json(singleUser)
     
   } catch (error) {
+    
     console.log(error.message);
     
     return next(error)
   }
 
+})
+
+app.post("/sendMsg",async(req,res,next)=>{
+
+  const{msgData:{sender,receiver,content}} = req.body
+
+  try{
+    const newMsg = await Msg.create({message: content,writer:sender,receiver:receiver})
+
+    return  res.status(201).json(newMsg)
+
+    
+  }catch (error) {
+    console.log(error);
+    return next(error)
+  }  
+})
+
+
+
+app.get('/:senderId/:contactId',async(req,res,next)=>{
+  const {senderId,contactId} = req.params  
+  
+  try {
+    const msgs  = await Msg.find({ 
+      $or:[
+        {writer:senderId,receiver:contactId},
+        {writer:contactId,receiver:senderId},
+      ]
+    }).sort({createdAt:1})
+    return res.status(200).json(msgs) 
+  
+  } 
+  catch (error) {
+    console.log(error.message);
+    return next(error)
+    
+  }
 })
 
 app.use(errorHandle)
