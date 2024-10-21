@@ -82,7 +82,8 @@ app.get('/auth/url', (_, res) => {
 app.get('/auth/token', async (req, res) => {
     const { code } = req.query
     if (!code) return res.status(400).json({ message: 'Authorization code must be provided' })
-    try {
+    
+      try {
       // Get all parameters needed to hit authorization server
       const tokenParam = getTokenParams(code)
       // Exchange authorization code for access token (id token is returned here too)
@@ -110,7 +111,7 @@ app.get('/auth/token', async (req, res) => {
 
       // Set cookies for user
       res.cookie('token', token , {
-        maxAge: 900000,
+        maxAge: 900_000,
         httpOnly: true,
       })
       // You can choose to store user in a DB instead
@@ -137,8 +138,10 @@ app.get('/auth/token', async (req, res) => {
       })
       // Reset token in cookie
       res.cookie('token', newToken, {
+
         maxAge: 900000,
         httpOnly: true,
+      
       })
       res.json({ loggedIn: true, user })
     } catch (err) {

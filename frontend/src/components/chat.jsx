@@ -8,8 +8,8 @@ import BodyOfChat from "./BodyOfChat"
 const serverUrl = import.meta.env.VITE_SERVER_URL
 axios.defaults.withCredentials = true
 const Chat = (props) => {
+
   const {messages,setMessages} = useContext(AuthContext)
-  
   const navigate = useNavigate()
   const {id1,id2} = useParams()
 
@@ -22,11 +22,18 @@ const Chat = (props) => {
       } catch (error) {
         console.error("Error fetching messages:", error.message);
       }
-    },[id1, id2,messages])
+    },[id1,id2])
 
     useEffect(() => {
-      fetchMessages(); // Fetch old messages on component mount
-    },[id1, id2, messages, fetchMessages])
+      fetchMessages()
+      let interval = setInterval(() => {
+        fetchMessages(); // Fetch old messages on component mount
+      }, 6000);
+      
+      return ()=>{
+        clearInterval(interval)
+      }
+    },[id1, id2, fetchMessages])
 
 
   const back = ()=>{

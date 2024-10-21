@@ -32,8 +32,9 @@ const HeaderChat = ({back}) => {
   
   return (
     <header className="bg-white w-full sm:w-[95%] m-2 mx-auto p-3 flex items-center ">
-
-    <FaArrowCircleLeft className="w-10  h-10 cursor-pointer" onClick={back}/>
+      <button onClick={back}>
+        <FaArrowCircleLeft className="w-10  h-10 cursor-pointer" />
+      </button>
     <div className="flex ml-6">
       <div className="relative bg-black rounded-lg overflow-hidden sm:w-20 sm:h-20 w-16 h-16"> 
           <img src={ userInfo?.picture ||img } alt="profile " className="profileImg  w-full" />

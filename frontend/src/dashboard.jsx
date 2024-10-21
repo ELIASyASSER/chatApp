@@ -1,7 +1,9 @@
 import axios from "axios"
 import { useEffect,useContext, useState } from "react"
+
 const serverUrl = import.meta.env.VITE_SERVER_URL
 axios.defaults.withCredentials = true
+
 import {AuthContext} from './context'
 import User from "./components/users"
 import Header from "./components/header"

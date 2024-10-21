@@ -20,6 +20,11 @@ const Footer = () => {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    
+    scrollTo({
+      top:document.body.offsetHeight,
+      behavior:"smooth"
+    })
     let msgValue = msgRef.current?.value.trim()
     if(!msgValue){
       alert("message mustn't be empty")
@@ -44,24 +49,25 @@ const Footer = () => {
 
     
       }
+    
+      
     }
     
 
   return (
-    <footer className="flex items-center fixed bottom-5 left-10 w-full ">
-      <input 
-        type="text" 
-        required
-        placeholder="Enter Your Message Here" 
-        className="p-4 text-[18px] outline-none shadow-md shadow-slate-400 w-[80%]" 
-        ref={msgRef}
-        
-      />
-      <button type="submit" onClick={handleSubmit}>
-        <FaPaperPlane  className="text-4xl ml-4 cursor-pointer hover:text-blue-700 transition"/>
+    <footer className="flex items-center fixed bottom-0 w-[60%] bg-white rounded-3xl h-16 border-t border-gray-300 p-2 left-[50%] -translate-x-1/2 ">
+  <input 
+    type="text" 
+    required
+    placeholder="Type a message..."
+    className="text-[16px] outline-none shadow-md shadow-slate-400  flex-grow h-10 px-4 py-2 rounded-full border border-gray-300 focus:ring-2 focus:ring-green-500 transition "
+    ref={msgRef}
+  />
+  <button type="submit" onClick={handleSubmit} className="ml-2">
+    <FaPaperPlane className="text-2xl text-green-500 cursor-pointer hover:text-green-700 transition" />
+  </button>
+</footer>
 
-      </button>
-    </footer>
   )
 }
 
