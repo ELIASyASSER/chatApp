@@ -19,7 +19,7 @@ const Login = () => {
     
     return (
     <div className=" w-[100%] xl:w-[87%] h-screen bg-white  p-0 m-auto shadow-lg   ">
-        <div className="info h-[70%] bg-gradient-to-b  from-violet-500 to-red-400 rounded-lg  flex flex-col  justify-center items-center">
+        <div className="info h-[70%] bg-gradient-to-b  from-violet-500 to-red-400   flex flex-col  justify-center items-center">
             <div className="text-white  flex flex-col justify-center items-center leading-loose basis-3/4" >
               <FaFacebookMessenger className="text-5xl"/>
               <h1 className="font-bold text-2xl tracking-wide mb-8">Digital Chat </h1>

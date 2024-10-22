@@ -11,8 +11,8 @@
 
 @layer components{
     .message{
+        position: relative;
         max-width: 70%; /* Limit the width of messages */
-        padding: 10px;
         border-radius: 15px;
         font-size: 16px;
         line-height: 1.5;
@@ -20,13 +20,11 @@
         word-wrap: break-word;
         margin: 10px;
         padding: 14px;
-        position: relative;
     }
     .sender {
         align-self: flex-start; /* Aligns the sender's message to the right */
         background-color: #cdf5e3; /* Example: light grey background for the sender */
         color: black; /* White text */
-        border-bottom-right-radius: 0; /* Remove bottom-right corner */
     }
     
     .receiver {

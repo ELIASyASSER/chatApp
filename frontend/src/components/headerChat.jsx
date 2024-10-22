@@ -9,7 +9,7 @@ axios.defaults.withCredentials = true
 
 const HeaderChat = ({back}) => {
   const {id2} = useParams()
-  const {userInfo,setUserInfo} = useContext(AuthContext)
+  const {userInfo,setUserInfo,loggedIn} = useContext(AuthContext)
   
   useEffect(() => {
     (async()=>{
@@ -38,7 +38,7 @@ const HeaderChat = ({back}) => {
     <div className="flex ml-6">
       <div className="relative bg-black rounded-lg overflow-hidden sm:w-20 sm:h-20 w-16 h-16"> 
           <img src={ userInfo?.picture ||img } alt="profile " className="profileImg  w-full" />
-          <span className="online absolute left-0 top-0 w-6 h-6 bg-green-600 rounded-full"></span>
+          <span className={`${loggedIn?'online':''} absolute left-0 top-0 w-6 h-6 bg-green-600 rounded-full`}></span>
       </div>
 
         <div className="ml-9 ">
