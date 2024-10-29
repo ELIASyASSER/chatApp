@@ -214,8 +214,8 @@ app.get('/auth/token', async (req, res) => {
 })
 
 app.post("/sendMsg",uploadMiddleware.single("img"),async(req,res,next)=>{
-  
-  const imgName = req.file ?req.file.originalname:null
+
+  const imgName = req.file ?req.file.filename:null
   const{sender,receiver,content} = req.body
 
   try{

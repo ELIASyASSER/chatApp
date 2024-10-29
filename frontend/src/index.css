@@ -13,13 +13,10 @@
     .message{
         position: relative;
         max-width: 70%; /* Limit the width of messages */
-        border-radius: 15px;
         font-size: 16px;
         line-height: 1.5;
         overflow-wrap: break-word;
         word-wrap: break-word;
-        margin: 10px;
-        padding: 14px;
     }
     .sender {
         align-self: flex-start; /* Aligns the sender's message to the right */
