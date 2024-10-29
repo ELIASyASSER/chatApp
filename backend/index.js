@@ -1,5 +1,8 @@
 import dotenv from 'dotenv/config.js'
-import  express  from "express"
+import path from 'path'
+import multer from 'multer'
+import { fileURLToPath } from 'url'
+import  express, { urlencoded }  from "express"
 import cookieParser from"cookie-parser"
 import cors from "cors"
 import jwt  from "jsonwebtoken"
@@ -21,7 +24,7 @@ const connection = async(url)=>{
 }
 
 const config = {
-    clientId: process.env.GOOGLE_CLIENT_ID,
+  clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
     tokenUrl: 'https://oauth2.googleapis.com/token',
@@ -50,14 +53,33 @@ const getTokenParams = (code) =>
     grant_type: 'authorization_code',
     redirect_uri: config.redirectUrl,
 })
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+app.use("/uploads",express.static(path.join(__dirname,'uploads')))
+
 app.use(cors({
 
     origin:[config.clientUrl],
     credentials:true
 }))
+
+app.use(express.json())
+app.use(urlencoded({extended:true}))
 app.use(cookieParser())
 // app.use(express.urlencoded({extended:false}))
-app.use(express.json())
+const storage = multer.diskStorage({
+  destination:function(req,file,cb){
+    cb(null,"./uploads")
+  },
+  filename:function(req,file,cb){
+    const parts = file.originalname.split(".")
+    const ext = parts[parts.length-1]
+    cb(null,`${Date.now()}.${ext}`)
+  }
+})
+const uploadMiddleware = multer({storage})
+
+
 // Verify auth
 const auth = (req, res, next) => {
     try {
@@ -191,13 +213,14 @@ app.get('/auth/token', async (req, res) => {
 
 })
 
-app.post("/sendMsg",async(req,res,next)=>{
-
-  const{msgData:{sender,receiver,content}} = req.body
+app.post("/sendMsg",uploadMiddleware.single("img"),async(req,res,next)=>{
+  
+  const imgName = req.file ?req.file.originalname:null
+  const{sender,receiver,content} = req.body
 
   try{
-    const newMsg = await Msg.create({message: content,writer:sender,receiver:receiver})
-
+    const newMsg = await Msg.create({message: content,writer:sender,receiver:receiver,img:imgName})
+    
     return  res.status(201).json(newMsg)
 
     
@@ -219,12 +242,16 @@ app.get('/:senderId/:contactId',async(req,res,next)=>{
         {writer:contactId,receiver:senderId},
       ]
     }).sort({createdAt:1})
-    return res.status(200).json(msgs) 
+    
+    return res.status(200).json(msgs.map((msg)=>{
+      return {...msg.toJSON(),img:`/uploads/${msg.img}`}
+    })) 
+
   
   } 
   catch (error) {
-    console.log(error.message);
-    return next(error)
+    console.log(error);
+    return next(error.message)
     
   }
 })

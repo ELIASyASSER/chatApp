@@ -17,25 +17,30 @@ const Chat = (props) => {
   // Fetch old messages when entering the chat
   const fetchMessages = useCallback(async () => {
     try {
+
       const { data } = await axios.get(`${serverUrl}/${id1}/${id2}`);
       setMessages(data); // Set old messages from the backend
-      } catch (error) {
+      
+    } catch (error) {
         console.error("Error fetching messages:", error.message);
       }
     },[id1,id2])
 
     useEffect(() => {
       fetchMessages()
+      
       let interval = setInterval(() => {
         fetchMessages(); // Fetch old messages on component mount
+
       }, 6000);
       
       return ()=>{
         clearInterval(interval)
       }
+
     },[id1, id2, fetchMessages])
 
-
+  
   const back = ()=>{
     navigate("/")
   }

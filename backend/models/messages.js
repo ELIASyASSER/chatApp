@@ -10,6 +10,9 @@ const msgSchema = new mongoose.Schema({
     },
     receiver:{
         type:mongoose.Types.ObjectId,ref:"User"
+    },
+    img:{
+        type:String
     }
 },{timestamps:true})
 

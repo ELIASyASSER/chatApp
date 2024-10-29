@@ -1,12 +1,12 @@
-
 import { Link } from 'react-router-dom'
 import img from '../assets/USER.jpg'
 import { useContext } from 'react'
 import { AuthContext } from '../context'
 const User = (props) => {
-    
-    const {user} = useContext(AuthContext)
-    
+
+  // Fetch old messages when entering the chat
+  const {user,messages,setMessages} = useContext(AuthContext)
+  
     let now = new Date(props.person.createdAt)
     let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -19,7 +19,6 @@ const User = (props) => {
                 <img src={props.person.picture || img} className="rounded-full w-[80px] border border-black border-2" alt={props.person.name} />
                 <div className="ml-4  flex-1">
                   <p className=" font-bold text-[18px]">{(props.person.name).toUpperCase()}</p>
-                  <p className="text-[#777] font-mono mt-2">last message here</p>
                 </div>
             </div>
             
