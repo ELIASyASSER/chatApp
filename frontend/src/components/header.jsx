@@ -2,7 +2,9 @@ import {useContext} from 'react'
 import  {AuthContext}from '../context'
 import img from '../assets/USER.jpg'
 const Header = ({handleLogout}) => {
-    const {user} = useContext(AuthContext)
+    
+    const {user,} = useContext(AuthContext)
+    
     return (
     <section className="bg-gradient-to-r from-blue-300 to-green-600   w-full m-auto p-4 rounded-md flex items-center justify-between">
     <button>

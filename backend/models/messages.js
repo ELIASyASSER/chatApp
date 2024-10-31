@@ -14,6 +14,6 @@ const msgSchema = new mongoose.Schema({
     img:{
         type:String
     }
-},{timestamps:true})
+},{timestamps:true}) 
 
 export const Msg = mongoose.model("Message",msgSchema)

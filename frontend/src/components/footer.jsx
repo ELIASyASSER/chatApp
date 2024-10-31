@@ -12,7 +12,6 @@ const Footer = () => {
 
   const {user,messages,setMessages,userInfo} = useContext(AuthContext)
   const [file,setFile] = useState(null)
-
   const msgRef = useRef(null)  
   
   useEffect(()=>{
@@ -35,7 +34,7 @@ const Footer = () => {
     let fileValue = file
     let img =fileValue
 
-    if(!msgValue && !file){
+    if(!msgValue && !img){
       alert("message mustn't be empty")
     return;
 
@@ -55,6 +54,7 @@ const Footer = () => {
             const {data} = await axios.post(`${serverUrl}/sendMsg`,msgData)
             setMessages((prevMsgs)=>[...(prevMsgs || []),data])
             msgRef.current.value = ""
+            setFile(null)
             
           } catch (error) {
           console.log(error.message);
@@ -66,7 +66,7 @@ const Footer = () => {
     
       
     }
-    
+
 
   return (
     <footer className="flex items-center flex-wrap justify-center fixed bottom-2 min-h-fit md:w-[65%] w-[95%] bg-white  h-16 border-t border-gray-300 p-2  left-[50%] -translate-x-1/2 ">

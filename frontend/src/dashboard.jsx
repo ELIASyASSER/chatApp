@@ -8,10 +8,23 @@ import {AuthContext} from './context'
 import User from "./components/users"
 import Header from "./components/header"
 
-
 const Dashboard = () => {
+  const { user, checkLoginState ,users,setUsers,receiverId,setReceiverId} = useContext(AuthContext)
+  const putLastTime = async()=>{
+    try {
+    await axios.put(`${serverUrl}/lastActive`,{receiverId})
     
-    const { user, checkLoginState ,users,setUsers} = useContext(AuthContext)
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
+  useEffect(()=>{
+    putLastTime()
+  },[])
+
+
     useEffect(() => {
 
       ;(async () => {
@@ -28,7 +41,7 @@ const Dashboard = () => {
     }, [])
 
     const handleLogout = async () => {
-  
+
       try {
   
         await axios.post(`${serverUrl}/auth/logout`)

@@ -5,14 +5,22 @@ axios.defaults.withCredentials = true
 const serverUrl = import.meta.env.VITE_SERVER_URL
 
 export const AuthContext = createContext()
+
 export const AuthContextProvider = ({ children }) => {
+
   const [loggedIn, setLoggedIn] = useState(null)
   const [user, setUser] = useState(null)
+
   const [users, setUsers] = useState([])
   const [messages,setMessages] = useState([])
+
   const [userInfo,setUserInfo] = useState()
+  const [lastMsg,setLastMsg] = useState([])
+  const [receiverId,setReceiverId] = useState('')
+
 
   const checkLoginState = useCallback(async () => {
+
     try {
       const {
         data: { loggedIn: logged_in, user },
@@ -20,7 +28,7 @@ export const AuthContextProvider = ({ children }) => {
       setLoggedIn(logged_in)
       user && setUser(user)
     } 
-    
+
     catch (err) {
       console.error(err)
     }
@@ -29,7 +37,6 @@ export const AuthContextProvider = ({ children }) => {
 
 
   useEffect(() => {
-
     checkLoginState()
   }, [checkLoginState])
 
@@ -39,7 +46,10 @@ export const AuthContextProvider = ({ children }) => {
     user 
     ,users,setUsers,
     messages,setMessages,
-    userInfo,setUserInfo}}>
+    userInfo,setUserInfo,
+    lastMsg,setLastMsg,
+    receiverId,setReceiverId
+    }}>
       {children}
     </AuthContext.Provider>
   )

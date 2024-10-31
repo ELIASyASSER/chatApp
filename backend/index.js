@@ -192,6 +192,7 @@ app.get('/auth/token', async (req, res) => {
     //single user
   app.get('/user/:id',async(req,res,next)=>{
 
+
   const {id} = req.params
   
   try {
@@ -242,17 +243,72 @@ app.get('/:senderId/:contactId',async(req,res,next)=>{
         {writer:contactId,receiver:senderId},
       ]
     }).sort({createdAt:1})
-    
-    return res.status(200).json(msgs.map((msg)=>{
-      return {...msg.toJSON(),img:`/uploads/${msg.img}`}
-    })) 
+    const lastMsg = await Msg.findOne({
+      $or:[
+        {writer:senderId,receiver:contactId},
+        {writer:contactId,receiver:senderId},
+      ]
+    }).sort({createdAt:-1}).limit(1)
+
+    return res.status(200).json(
+
+      {messages:msgs.map((msg)=>{
+      if(msg.img ==null){
+        return {...msg.toJSON()}
+      }else{
+        return {...msg.toJSON(),img:`/uploads/${msg.img}`}
+      }
+
+    })
+  
+      ,lastmessage:lastMsg}) 
 
   
   } 
+
   catch (error) {
     console.log(error);
     return next(error.message)
     
+  }
+})
+
+app.put("/lastActive",async(req,res,next)=>{
+  const {receiverId}  = req.body
+  try {
+    
+    const lastTime = await User.findByIdAndUpdate(receiverId,{lastActive:new Date()})
+    if(!lastTime){
+      return next()
+    }
+    res.sendStatus(200);
+    
+  } catch (error) {
+    next(error)
+  }
+})
+app.get("/lastActive",async(req,res,next)=>{
+  const {id} = req.query
+  try {
+    const user = await User.findById(id,'lastActive')
+
+    if(!user){
+      return next()
+    }
+    res.status(200).json({lastActive:user})
+  } catch (error) {
+    next(error)
+  }
+
+})
+app.get("/tst",async(req,res,next)=>{
+  try {
+    const {id} = req.body
+    console.log(id);
+    const xu = await User.findOne({_id:id})
+    res.status(200).json(xu)
+  } catch (error) {
+    next(error)
   }
 })
 

@@ -23,6 +23,7 @@ const User = (props) => {
             </div>
             
             <time className="font-medium">
+            <span className="text-gray-500 mr-3 font-mono ">Joined At</span>
 
               {
                 date

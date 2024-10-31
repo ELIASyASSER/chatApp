@@ -15,6 +15,9 @@ const BodyOfChat = () => {
       top:document.body.offsetHeight,
       behavior:"smooth"
     })
+
+
+
   },[])
 
   
@@ -23,8 +26,9 @@ const BodyOfChat = () => {
   }
   
   return <main className="mb-40">
+    
     {messages.map((msg,idx)=>{
-      
+
       return <div key={idx} className={`flex w-[90%]  mx-auto  py-1 pl-1  text-xl  pr-2 flex-col`}>
         
         <div className={`message  ${msg.writer === id1?"sender":"receiver"}${!msg.message?' w-10 h-10 rounded-2xl':''}`}>
@@ -32,7 +36,7 @@ const BodyOfChat = () => {
             <p className={`leading-loose ${msg.message?'px-4 py-2':'p-5'}`}>{msg.message}</p>
             
         </div>
-            <img src={`${serverUrl}${msg.img}`}  className={`md:w-[360px] w-72  rounded-sm max-w-full ${msg.writer === id1?"sender":"receiver"} `}/>
+            {msg.img &&<img src={`${serverUrl}${msg.img}`}  className={`md:w-[360px] w-72  rounded-sm max-w-full ${msg.writer === id1?"sender":"receiver"} `}/>}
         
 
     </div>
