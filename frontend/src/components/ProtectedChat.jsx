@@ -8,6 +8,7 @@ import { Navigate, Outlet } from "react-router-dom"
 const ProtectedChat = ()=>{
 
 const {loggedIn} = useContext(AuthContext)
+
 if (loggedIn ===  null){
     return <div>Authentication</div>
 }

@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react"
 import {AuthContext} from '../context.jsx'
 import axios from "axios"
 import {useParams}from 'react-router-dom'
+import { FaArrowAltCircleUp } from "react-icons/fa"
 
 const serverUrl = import.meta.env.VITE_SERVER_URL
 axios.defaults.withCredentials = true
@@ -19,16 +20,20 @@ const BodyOfChat = () => {
 
 
   },[])
-
+  const goUp = ()=>{
+    scrollTo({
+      top:0,
+      behavior:"smooth"
+    })
+  }
   
   if (!messages || !Array.isArray(messages)) {
     return <div></div>;  // Render something informative
   }
   
-  return <main className="mb-40">
-    
+  return <main className="mb-28  relative">
+    <button onClick={goUp} className="fixed right-8 bottom-5  h-12 w-8 flex justify-center items-center"><FaArrowAltCircleUp className="size-full text-sky-600" /></button>
     {messages.map((msg,idx)=>{
-
       return <div key={idx} className={`flex w-[90%]  mx-auto  py-1 pl-1  text-xl  pr-2 flex-col`}>
         
         <div className={`message  ${msg.writer === id1?"sender":"receiver"}${!msg.message?' w-10 h-10 rounded-2xl':''}`}>
@@ -37,7 +42,7 @@ const BodyOfChat = () => {
             
         </div>
             {msg.img &&<img src={`${serverUrl}${msg.img}`}  className={`md:w-[360px] w-72  rounded-sm max-w-full ${msg.writer === id1?"sender":"receiver"} `}/>}
-        
+
 
     </div>
     })}

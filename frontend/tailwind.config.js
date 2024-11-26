@@ -6,6 +6,7 @@ export default {
   ],
   theme: {
     extend: {
+
       colors:{
         sColor:"#08abec"
       },
@@ -27,6 +28,7 @@ export default {
       transitionProperty:{
         "transition":"2s"
       }
+
     },
   },
   plugins: [

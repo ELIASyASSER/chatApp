@@ -2,6 +2,7 @@ import  { useContext,useRef,useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "./context"
 import axios  from "axios"
+import Loading from "./components/loading"
 const serverUrl = import.meta.env.VITE_SERVER_URL
 
 const Callback = () => {
@@ -36,7 +37,7 @@ const Callback = () => {
     }, [checkLoginState, loggedIn, navigate])
     if(loading){
 
-      return <div className="text-7xl text-center flex justify-center items-center ">loading ...</div>
+      return <Loading/>
     
     }
 
