@@ -12,10 +12,12 @@ that i use websockets to handle real-time updates [digtal chat updated version](
 ## Table Of Contents
 - [Usage](#Installation-and-Usage)
 - [Used Techs](#used-Techs)
-
+- [Description](#Description)
+- [Contribution](#Contribution)
 ## Installation-and-Usage
 To get the project up and running locally:
 1. Install [Node.js](https://nodejs.org/en/)
+
 2. clone this repository by running in your cmd `git clone https://github.com/ELIASyASSER/chatApp.git`
   
 4. now you will find two directories `frontend` and `backend` split your terminal and run `cd frontend` and in  second terminal run `cd backend` now run `npm install` in both of `frontend and backend directories`
@@ -39,6 +41,6 @@ To get the project up and running locally:
 - Tailwind.css
 - react-icons
   
-## Contribution
+## 🤝 Contribution
 if there any issue or features leave an issue i will consider it [Issue Page]([issues/](https://github.com/ELIASyASSER/chatApp/issues))
 or make [pull request here ](https://github.com/ELIASyASSER/chatApp/pulls)
