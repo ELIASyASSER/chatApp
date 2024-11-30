@@ -42,7 +42,7 @@ To get the project up and running locally:
 - mongooose
 - Tailwind.css
 - react-icons
-- [Vite Build Tool](https://vite.com)
+- [Vite Build Tool](https://vite.dev/guide/)
   
 ### Contribution
 🤝
