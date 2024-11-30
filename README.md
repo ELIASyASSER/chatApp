@@ -5,7 +5,7 @@ merns stack chat app with mern stack i make this app using rest api (polling) ca
 It is “request-response”, so the server can only respond to a request. If a user sends a message to another user,
 a REST API cannot automatically
 notify the recipient as the recipient will not have requested that data if you interested see updated updated version 
-that i use websockets to handle real-time updates #[digtal chat updated version](chatting)    
+that i use websockets to handle real-time updates [digtal chat updated version](#chatting)    
 
 ## Table Of Contents
 - [Usage](#Installation-and-Usage)
@@ -20,7 +20,7 @@ To get the project up and running locally:
 5. [see full documentation here how to know how to get these variables](https://clerk.com/blog/oauth2-react-user-authorization#get-your-google-client-id-and-secret) 
 6. [now you will enter here to get your variables and put them](https://console.cloud.google.com/cloud-resource-manager)
 7. finally run `npm run dev` in both `frontend` and `backend` direcotries
-8. [open your browser  type](http://localhost:5173)
+8. [open your browser  type] `http://localhost:5173`
 **if you want to publish this app to  github make sure to ignore node_modules and .env file because of secret data**   
 ## Used Techs 
 - React
@@ -32,4 +32,5 @@ To get the project up and running locally:
 - react-icons
   
 ## Contribution
-if there any issue or features leave an issue i will consider it [Issue Page](issues/)
+if there any issue or features leave an issue i will consider it [Issue Page]([issues/](https://github.com/ELIASyASSER/chatApp/issues))
+or make [pull request here ]()
