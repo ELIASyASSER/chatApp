@@ -1,93 +1,121 @@
+import fs from "fs";
 import axios from "axios";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import { User } from "../models/user.js";
+import path from "path";
 import { authParams, config, getTokenParams } from "../utils/oAuth.config.js";
+import crypto from "crypto"; // For hashing the image URL
+
+// Function to generate a filename based on a hash of the image URL
+
+const getCachedImagePath = (url) => {
+  const hash = crypto.createHash("sha256").update(url).digest("hex");
+  return path.join("imgUploads", `${hash}_profile.jpg`);
+};
 
 
 const authUrl = (_, res) => {
-    res.json({
-        url: `${config.authUrl}?${authParams}`,
-    })
-}
+  res.json({
+    url: `${config.authUrl}?${authParams}`,
+  });
+};
 
-const authToken =  async (req, res) => {
-    const { code } = req.query
-    if (!code) return next()
-    // res.status(400).json({ message: 'Authorization code must be provided' })
+const authToken = async (req, res, next) => {
+  const { code } = req.query;
+  if (!code) return next();
 
-      try {
-      // Get all parameters needed to hit authorization server
-      const tokenParam = getTokenParams(code)
-      // Exchange authorization code for access token (id token is returned here too)
-      const {
-        data: { id_token },
-      } = await axios.post(`${config.tokenUrl}?${tokenParam}`)
-      if (!id_token) return res.status(400).json({ message: 'Auth error' })
-      // Get user info from id token
-      const { email, name, picture } = jwt.decode(id_token)
+  try {
+    const tokenParam = getTokenParams(code);
+    const {
+      data: { id_token },
+    } = await axios.post(`${config.tokenUrl}?${tokenParam}`);
 
-      let user = await User.findOne({email:email})
+    if (!id_token) return res.status(400).json({ message: 'Auth error' });
 
-      if(!user){
-        user = await User.create({name:name,email:email,picture:picture})
+    const { email, name, picture } = jwt.decode(id_token);
 
-      }
-
-
-      // Sign a new token
-      const token = jwt.sign({ user }, config.tokenSecret, {
-        expiresIn: config.tokenExpiration,
-      
-    })
-
-      // Set cookies for user
-      res.cookie('token', token , {
-        maxAge: 900_000,
-        httpOnly: true,
-      })
-      // You can choose to store user in a DB instead
-      res.json({
-
-        user,
-      })
-    } catch (err) {
-      console.log('Error: ', err)
-      next(err)
-    //   res.status(500).json({ message: err.message || 'Server error' })
-    }
-}
-
-const authLoggedIn =  (req, res) => {
-
-    try {
-      // Get token from cookie
-      const token = req.cookies.token
-      if (!token) return res.json({ loggedIn: false })
-      const { user } = jwt.verify(token, config.tokenSecret)
+    // Check if user already exists
+    let user = await User.findOne({ email });
     
-      const newToken = jwt.sign({ user }, config.tokenSecret, {
-        expiresIn: config.tokenExpiration,
-      })
-      // Reset token in cookie
-      res.cookie('token', newToken, {
-        maxAge: 900000,
-        httpOnly: true,
-      })
-      res.json({ loggedIn: true, user })
-    } catch (err) {
-      res.json({ loggedIn: false })
+    // Define the path for the cached image
+    const imagePath = getCachedImagePath(picture);
+
+    // Check if the image already exists
+    if (!fs.existsSync(imagePath)) {
+      // Download and save the image only if it doesn't exist
+      const imageResponse = await axios.get(picture, { responseType: 'stream' });
+      fs.mkdirSync('imgUploads', { recursive: true });
+
+
+      const writer = fs.createWriteStream(imagePath);
+      imageResponse.data.pipe(writer);
+
+      
+      await new Promise((resolve, reject) => {
+        writer.on('finish', resolve);
+        writer.on('error', reject);
+      });
     }
-}
-const authLoggedOut =  (_, res) => {
 
-    // clear cookie
+    // Update or create the user
+    if (!user) {
+      user = await User.create({
+        name,
+        email,
+        picture: imagePath, // Store the local path to the cached image
+      });
+    } else if (user.picture !== imagePath) {
+      user.picture = imagePath; // Update only if different
+      await user.save();
+    }
 
-    res.clearCookie('token').json({ message: 'Logged out' })
-}
+    // Sign a new token
+    const token = jwt.sign({ user }, config.tokenSecret, {
+      expiresIn: config.tokenExpiration,
+    });
+
+
+    res.cookie('token', token, {
+      maxAge: 900_000,
+      httpOnly: true,
+    });
+
+    res.json({ user });
+  } catch (err) {
+    console.log('Error: ', err);
+    next(err);
+  }
+};
+
+const authLoggedIn = (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.json({ loggedIn: false });
+
+    const { user } = jwt.verify(token, config.tokenSecret);
+
+    const newToken = jwt.sign({ user }, config.tokenSecret, {
+      expiresIn: config.tokenExpiration,
+    });
+
+    res.cookie('token', newToken, {
+      maxAge: 900000,
+      httpOnly: true,
+    });
+
+    res.json({ loggedIn: true, user });
+  } catch (err) {
+    res.json({ loggedIn: false });
+  }
+};
+
+const authLoggedOut = (_, res) => {
+  res.clearCookie('token').json({ message: 'Logged out' });
+};
 
 export {
-    authUrl,
-    authToken,
-    authLoggedIn,
-    authLoggedOut
-}
+  authUrl,
+  authToken,
+  authLoggedIn,
+  authLoggedOut,
+};

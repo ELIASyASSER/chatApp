@@ -1,14 +1,15 @@
 import {useContext} from 'react'
 import  {AuthContext}from '../context'
 import img from '../assets/USER.jpg'
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
 const Header = ({handleLogout}) => {
     
-    const {user,} = useContext(AuthContext)
-    
+    const {user} = useContext(AuthContext)
+    const imgURL = `${SERVER_URL}/${user?.picture}`||img
     return (
     <section className="bg-gradient-to-r from-blue-300 to-green-600   w-full m-auto p-4 rounded-md flex items-center justify-between">
     <button>
-    <img src={user?.picture||img} alt={user?.name} className="rounded-full"/>
+    <img src={imgURL} alt={user?.name} className="rounded-full"/>
     </button>
     <div className="ml-10  flex-1 ">        
 

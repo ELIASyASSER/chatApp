@@ -24,6 +24,8 @@ const __dirname = path.dirname(__filename)
 
 //middlewares
 app.use("/uploads",express.static(path.join(__dirname,'uploads')))
+app.use("/imgUploads",express.static(path.join(__dirname,'imgUploads')))
+
 app.use(cors({
     origin:[config.clientUrl],
     credentials:true

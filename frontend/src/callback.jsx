@@ -24,7 +24,7 @@ const Callback = () => {
             navigate('/')
             setLoading(false)
 
-          } catch (err) {
+          } catch (err)   {
             console.error(err)
             setLoading(false)
             navigate('/')
