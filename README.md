@@ -1,5 +1,5 @@
 # Digital Chat
-
+![Digital Chat ](./ex.png)
 ## Description
 mern stack chat app with  i make this app using rest api (polling) cannot handle real time updates.
 
