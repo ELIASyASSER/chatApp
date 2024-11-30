@@ -30,7 +30,10 @@ To get the project up and running locally:
 
 8. finally run `npm run dev` in both `frontend` and `backend` direcotries
 
-9. [open your browser  type] `http://localhost:5173`
+9. [open your browser  [chrome_for_example] type] `http://localhost:5173`
+
+10. [open your browser [firefox_for_example] type] `http://localhost:5173` **to start chatting between two users if you want to add more users enter to other browser and sign in** 
+
 **if you want to publish this app to  github make sure to ignore node_modules and .env file because of secret data**   
 ## Used Techs 
 - React
