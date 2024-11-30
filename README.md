@@ -1,7 +1,7 @@
 # Digital Chat
 ![Digital Chat ](./ex.png)
 ## Description
-mern stack chat app with  i make this app using rest api (polling) cannot handle real time updates.
+mern stack chat app   i make this app using rest api (polling) cannot handle real time updates.
 
 It is “request-response”, so the server can only respond to a request. If a user sends a message to another user,
 a REST API cannot automatically
