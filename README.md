@@ -6,7 +6,7 @@ merns stack chat app with  i make this app using rest api (polling) cannot handl
 It is “request-response”, so the server can only respond to a request. If a user sends a message to another user,
 a REST API cannot automatically
 
-for authentication i use OAuth2 with clerck will be explained more in [Installation-and-Usage](Installation-and-Usage)  if you interested see updated updated version 
+for authentication i use OAuth2 with clerck will be explained more in [Installation-and-Usage](#Installation-and-Usage)  if you interested see updated updated version 
 
 that i use websockets to handle real-time updates [digtal chat updated version](#chatting)    
 
@@ -14,7 +14,7 @@ that i use websockets to handle real-time updates [digtal chat updated version](
 - [Installation-and-Usage](#Installation-and-Usage)
 - [Used-Techs](#Used-Techs)
 - [Description](#Description)
-- [Contribution ff](#Contribution)
+- [Contribution](#Contribution)
 ## Installation-and-Usage
 To get the project up and running locally:
 1. Install [Node.js](https://nodejs.org/en/)
@@ -45,8 +45,8 @@ To get the project up and running locally:
 - Tailwind.css
 - react-icons
   
-🤝
 ### Contribution
+🤝
 if there any issue or features leave an issue i will consider it [Issue Page]([issues/](https://github.com/ELIASyASSER/chatApp/issues))
 
 or make [pull request here ](https://github.com/ELIASyASSER/chatApp/pulls)
