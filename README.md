@@ -21,19 +21,17 @@ To get the project up and running locally:
 
 2. clone this repository by running in your cmd `git clone https://github.com/ELIASyASSER/chatApp.git`
   
-4. now you will find two directories `frontend` and `backend` split your terminal and run `cd frontend` and in  second terminal run `cd backend` now run `npm install` in both of `frontend and backend directories`
+3. now you will find two directories `frontend` and `backend` split your terminal and run `cd frontend` and in  second terminal run `cd backend` now run `npm install` in both of `frontend and backend directories`
 
-5. you will find .env.example rename it to .env and replace variables inside it becasue i use OAuth2 with clerck
+4. you will find .env.example rename it to .env and replace variables inside it becasue i use OAuth2 with clerck
 
-6. [see full documentation here how to know how to get these variables](https://clerk.com/blog/oauth2-react-user-authorization#get-your-google-client-id-and-secret) 
+5. [see full documentation here how to know how to get these variables](https://clerk.com/blog/oauth2-react-user-authorization#get-your-google-client-id-and-secret) 
 
-7. [now you will enter here to get your variables and put them](https://console.cloud.google.com/cloud-resource-manager)
+6. finally run `npm run dev` in both `frontend` and `backend` direcotries
 
-8. finally run `npm run dev` in both `frontend` and `backend` direcotries
+7. open your browser  **chrome_for_example** type `http://localhost:5173`
 
-9. open your browser  **chrome_for_example** type `http://localhost:5173`
-
-10. open your other account or other browser  **firefox_for_example type** `http://localhost:5173` **to start chatting between two users if you want to add more users enter to other browser and sign in** 
+8. open your other account or other browser  **firefox_for_example type** `http://localhost:5173` **to start chatting between two users if you want to add more users enter to other browser and sign in** 
 
 **if you want to publish this app to  github make sure to ignore `node_modules` and `.env` files because of secret data**   
 ## Used-Techs 
