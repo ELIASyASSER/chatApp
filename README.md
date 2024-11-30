@@ -45,7 +45,7 @@ To get the project up and running locally:
 - react-icons
   
 # Digital Chat
-
+--
 ## Description
 merns stack chat app with mern stack i make this app using rest api (polling) cannot handle real time updates.
 
@@ -54,12 +54,15 @@ a REST API cannot automatically
 
 notify the recipient as the recipient will not have requested that data if you interested see updated updated version 
 that i use websockets to handle real-time updates [digtal chat updated version](#chatting)    
-
+--
 ## Table Of Contents
 - [Usage](#Installation-and-Usage)
 - [Used-Techs](#Used-Techs)
 - [Description](#Description)
 - [Contribution](#Contribution)
+
+--
+
 ## Installation-and-Usage
 To get the project up and running locally:
 1. Install [Node.js](https://nodejs.org/en/)
@@ -80,7 +83,11 @@ To get the project up and running locally:
 
 10. open your other account or other browser  **firefox_for_example type** `http://localhost:5173` **to start chatting between two users if you want to add more users enter to other browser and sign in** 
 
-**if you want to publish this app to  github make sure to ignore `node_modules` and `.env` files because of secret data**   
+--
+
+if you want to publish this app to  github make sure to ignore `node_modules` and `.env` files because of secret data   
+--
+
 ## Used-Techs 
 - React
 - React-router-dom
@@ -89,10 +96,10 @@ To get the project up and running locally:
 - mongooose
 - Tailwind.css
 - react-icons
+
   
+🤝
 ## Contribution
 if there any issue or features leave an issue i will consider it [Issue Page]([issues/](https://github.com/ELIASyASSER/chatApp/issues))
-or make [pull request here ](https://github.com/ELIASyASSER/chatApp/pulls)
-##  Contribution
-if there any issue or features leave an issue i will consider it [Issue Page]([issues/](https://github.com/ELIASyASSER/chatApp/issues))
+--
 or make [pull request here ](https://github.com/ELIASyASSER/chatApp/pulls)
