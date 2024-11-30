@@ -14,7 +14,7 @@ that i use websockets to handle real-time updates [digtal chat updated version](
   - [Table Of Contents](#table-of-contents)
   - [Installation-and-Usage](#installation-and-usage)
   - [Used-Techs](#used-techs)
-    - [Contribution](#contribution)
+  - [Contribution](#contribution)
 ## Installation-and-Usage
 To get the project up and running locally:
 1. Install [Node.js](https://nodejs.org/en/)
